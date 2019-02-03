@@ -8,8 +8,8 @@ class Node {
 
 // 单链表类
 class SingleLinkList {
-    constructor() {
-        this.head = null;
+    constructor(node = null) {
+        this.head = node;
         this.len = 0;
     }
 
@@ -87,6 +87,9 @@ class SingleLinkList {
 
     // 链表的删除
     remove(item) {
+        if (this.is_empty) {
+            return
+        }
         // 两个游标，一个在前一个在后以定位删除的元素
         let current = this.head;
         let pre = null;

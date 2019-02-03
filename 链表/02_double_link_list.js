@@ -9,8 +9,8 @@ class Node {
 
 // 双向链表类
 class DoubleLinkList {
-    constructor() {
-        this.head = null;
+    constructor(node = null) {
+        this.head = node;
         this.len = 0;
     }
 
@@ -32,7 +32,7 @@ class DoubleLinkList {
             list.push(current.elem);
             current = current.next;
         }
-        console.log(list.toString());
+        console.log(list);
     }
 
     // 头插
@@ -47,6 +47,7 @@ class DoubleLinkList {
             this.head = node;
             node.next.prev = node;
         }
+        this.len += 1;
     }
 
     // 尾插
@@ -64,6 +65,7 @@ class DoubleLinkList {
             current.next = node;
             node.prev = current;
         }
+        this.len += 1;
     }
 
     // 任意位置插入节点
@@ -86,11 +88,15 @@ class DoubleLinkList {
             node.prev = current.prev;
             current.prev.next = node;
             current.pre = node;
+            this.len += 1;
         }
     }
 
     // 删除节点
     remove(item) {
+        if (this.is_empty) {
+            return
+        }
         let current = this.head;
         // 移动指针并进行判断
         while (current !== null) {
@@ -98,7 +104,7 @@ class DoubleLinkList {
                 // 判断是否为头节点
                 if (current === this.head) {
                     this.head = current.next;
-                    if (current.next == null) {
+                    if (current.next == null) { // 如果只有一个节点
                         current.next.prev = null;
                     }
                     break
@@ -113,6 +119,7 @@ class DoubleLinkList {
                 current = current.next
             }
         }
+        this.len -= 1;
     }
 
     // 搜索节点
@@ -131,6 +138,7 @@ class DoubleLinkList {
 
 // 测试用例
 const dll = new DoubleLinkList();
+dll.remove(0);
 console.log(dll.size);
 console.log(dll.is_empty);
 dll.append(1);
