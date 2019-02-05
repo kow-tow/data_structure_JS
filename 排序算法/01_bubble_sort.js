@@ -17,6 +17,6 @@ function bubble(list) {
 }
 
 // 测试用例
-let ary = [3,1,4,2,5,2,1];
-bubble(ary);
-console.log(ary);
+let nums = [-12, -10, -10, -9, -8, -8, -7, -7, -6, -5, -4, -4, -4, -3, -1, 1, 2, 2, 3, 4, 5, 6, 6, 7, 8, 8, 9, 9, 10, 10, 10];
+bubble(nums);
+console.log(nums);
