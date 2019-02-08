@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>offset获取</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Apple Chancery";
+        }
+
+        #outer {
+            width: 180px;
+            height: 180px;
+            margin: 50px auto;
+            padding: 50px;
+            border: 10px solid #000000;
+            background: orange;
+        }
+
+        #inner {
+            width: 80px;
+            height: 80px;
+            padding: 50px;
+            border: 10px solid #000000;
+            background: darkcyan;
+        }
+
+        #center {
+            width: 50px;
+            height: 50px;
+            border: 10px solid #000000;
+            background: bisque;
+        }
+    </style>
+</head>
+<body>
+<div id="outer">
+    <div id="inner">
+        <div id="center"></div>
+    </div>
+</div>
+</body>
+<script>
+    var outer = document.getElementById("outer"), inner = document.getElementById("inner"),
+        center = document.getElementById("center");
+
+    /**
+     * 等同于jQuery中的offset方法，实现获取页面中任意一个元素，距离body的偏移（包含左偏移和上偏移），不管当前父级参照物是谁
+     * @param curEle：当前元素
+     */
+    function offset(curEle) {
+        var totalLeft = null, totalTop = null, par = curEle.offsetParent;
+        // 首先把自己本身进行叠加
+        totalLeft += curEle.offsetLeft;
+        totalTop += curEle.offsetTop;
+        // 只要没有找到body，就把父级参照物的左边框和偏移也进行累加
+        while (par) {
+            if (navigator.userAgent.indexOf("MSIE 8.0") === -1) { // 如果不是IE8就累加边框
+                // 累加父级参照物的边框
+                totalLeft += par.clientLeft;
+                totalTop += par.clientTop;
+            }
+            // 累加父级参照物本身的偏移
+            totalLeft += par.offsetLeft;
+            totalTop += par.offsetTop;
+            // 基于当前的P再向上找父级参照物
+            par = par.offsetParent;
+        }
+        return {left: totalLeft, top: totalTop};
+    }
+
+    console.log(offset(center));
+</script>
+</html>

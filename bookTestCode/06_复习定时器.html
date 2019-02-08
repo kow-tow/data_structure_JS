@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>定时器</title>
+</head>
+<body>
+<script>
+    const timer1 = window.setTimeout(function () {
+        console.log("1号定时器");
+    }, 1000);
+    console.log(timer1); // 1
+    const timer2 = window.setTimeout(function () {
+        console.log("2号定时器");
+    }, 1000);
+    console.log(timer2); // 2
+    const timer3 = window.setInterval(function () {
+        console.log("3号定时器");
+    }, 1000);
+    console.log(timer3); // 3
+
+    window.clearTimeout(1);
+    window.clearInterval(timer2);
+    window.clearInterval(timer3);
+
+    // setTimeout实现setInterval效果
+    let n = 0;
+    let timer = null;
+
+    function move() {
+        window.clearTimeout(timer); // 每一次执行前，把没用的那个定时器清除掉
+        n++;
+        console.log(n);
+        if (n === 5) {
+            return;
+        }
+        timer = window.setTimeout(move, 1000);
+    }
+
+    move();
+</script>
+</body>
+</html>

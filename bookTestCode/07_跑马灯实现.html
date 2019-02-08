@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跑马灯</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+        }
+
+        #box {
+            margin: 50px auto;
+            padding: 0 10px;
+            width: 1000px;
+            height: 35px;
+            line-height: 35px;
+            border: 2px dashed lightcoral;
+            background: lightyellow;
+        }
+
+        #wrap {
+            white-space: nowrap; /*强制文字不换行，使得溢出导致出现的滚动条变成横向的*/
+            height: 35px;
+            overflow: hidden;
+        }
+
+        #wrap div {
+            display: inline-block;
+        }
+
+        #wrap div span {
+            color: red;
+            font-weight: bold;
+            font-size: 17px;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div id="wrap">
+        <div id="conBegin">
+            <span>我们需要知道：</span>
+            对任何专业技术人员来说，理解数据结构都非常重要。作为软件开发者，我们要能够用编程语言和数据结构来解决问题。
+            编程语言和数据结构是这些问题解决方案中不可或缺的一部分。如果选择了不恰当的数据结构，可能会影响所写程序的性能。
+            因此，了解不同数据结构和它们的适用范围十分重要。
+        </div>
+        <div id="conEnd">
+            <span>我们需要知道：</span>
+            对任何专业技术人员来说，理解数据结构都非常重要。作为软件开发者，我们要能够用编程语言和数据结构来解决问题。
+            编程语言和数据结构是这些问题解决方案中不可或缺的一部分。如果选择了不恰当的数据结构，可能会影响所写程序的性能。
+            因此，了解不同数据结构和它们的适用范围十分重要。
+        </div>
+    </div>
+</div>
+<script>
+    const box = document.getElementById("box");
+    const wrap = document.getElementById("wrap");
+    const conBegin = document.getElementById("conBegin");
+    const conBegin_width = getCss(conBegin, "width");
+    // 实现循环跑马灯原理：把内容复制一份一模一样的放在后面，当conEnd的开头运动到最外层开头的时候，我们让scrollLeft的值瞬间变为0
+    // 视觉上就会觉得是无缝衔接
+    function move() {
+        // 获取盒子的scrollLeft
+        let curLeft = wrap.scrollLeft;
+        wrap.scrollLeft = curLeft + 1;
+        if (curLeft >= conBegin_width) { // 说明走到了conEnd的开头，让卷去的部分直接变为0
+            wrap.scrollLeft = 0;
+        }
+    }
+    let timer = window.setInterval(move, 10);
+
+    // 鼠标悬停停止移动
+    box.onmouseover = function () {
+        window.clearInterval(timer);
+    };
+
+    // 鼠标离开继续移动
+    box.onmouseout = function () {
+        timer = window.setInterval(move, 10);
+    };
+
+    // getCss工具函数
+    function getCss(curEle, attr) {
+        let val = null;
+        let reg = null;
+        if ("getComputedStyle" in window) {
+            val = window.getComputedStyle(curEle, null)[attr];
+        } else {
+            if (attr === 'opacity') {
+                val = curEle.currentStyle['filter'];
+                reg = /^alpha\(opacity=(\d+(?:\.\d+)?)\)$/i;
+                val = reg.test(val) ? reg.exec(val)[1] / 100 : 1;
+            } else {
+                val = curEle.currentStyle[attr];
+            }
+        }
+        reg = /^(-?\d+(\.\d+)?)(px|pt|rem|em)?$/;
+        return reg.test(val) ? parseFloat(val) : val;
+    }
+</script>
+</body>
+</html>

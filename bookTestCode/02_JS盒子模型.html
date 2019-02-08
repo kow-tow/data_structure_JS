@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS盒子模型</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            margin: 100px;
+            padding: 30px;
+            width: 200px;
+            height: 200px;
+            border: 10px solid deeppink;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    对任何专业技术人员来说，理解数据结构都非常重要。
+    编程语言和数据结构是这些问题解决方案中不可或缺的一部分。如果选择了不恰当的数据结构，可能会影响所写程序的性能。
+</div>
+<script>
+    var box = document.getElementById('box');
+    console.dir(box);
+    function win(attr, value) {
+        if (typeof value === 'undefined') { // 未传递value值，属于获取值
+            return document.documentElement[attr] || document.body[attr];
+        }
+        // 设置
+        document.documentElement[attr] = value;
+        document.body[attr] = value;
+    }
+
+    console.log(win('scrollTop'));
+    win('scrollTop', 100);
+</script>
+</body>
+</html>

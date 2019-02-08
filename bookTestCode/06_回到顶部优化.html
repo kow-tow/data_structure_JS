@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>backToTop</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: "Apple Chancery";
+        font-size: 20px;
+        -webkit-user-select: none;
+    }
+
+    html, body {
+        width: 100%;
+        height: 500%;
+        background: #11c900;
+        background: -webkit-linear-gradient(top, #11c900, lightseagreen, lightcoral, lightblue, lightcyan, lightgoldenrodyellow, lightcoral, lightskyblue, lightgreen, lightslategray);
+    }
+
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
+
+    a:hover, a:active, a:target, a:visited {
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    #goLink {
+        display: block;
+        position: fixed;
+        bottom: 150px;
+        right: 50px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background: rebeccapurple;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+
+    #goLink:hover {
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+</style>
+<body>
+<a href="javascript:;" id="goLink">GO</a>
+</body>
+<script>
+    const golink = document.getElementById("goLink");
+    // 优化内容
+    // 总时间（duration）：500ms
+    // 频率（interval）：多长时间走一步 10ms
+    // 总距离（target）：当前位置（当前scrollTop值）- 目标距离的值（0）
+    // 步长（step）：每10ms走多少距离 target/duration = 每1ms走的距离  每1ms走的距离*interval = 每10ms走的距离
+    golink.onclick = function () {
+        // 当点击Golink的时候，首先要把每一步要走的步长计算出来
+        const duration = 500, interval = 10, target = document.documentElement.scrollTop || document.body.scrollTop;
+        const step = (target / duration) * interval;
+        // 计算完成步长后，让当前的页面每隔interval长时间走一步：在原来的scrollTop基础上减去步长
+        const timer = window.setInterval(function () {
+            var curTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (curTop === 0) { // 到头
+                window.clearInterval(timer);
+                return;
+            }
+            curTop -= step;
+            document.documentElement.scrollTop = curTop;
+            document.body.scrollTop = curTop;
+        }, interval);
+    }
+</script>
+</html>

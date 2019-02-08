@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GetCss</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #box {
+            margin: 100px;
+            padding: 30px;
+            width: 200px;
+            height: 200px;
+            border: 10px solid deeppink;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    对任何专业技术人员来说，理解数据结构都非常重要。
+    编程语言和数据结构是这些问题解决方案中不可或缺的一部分。如果选择了不恰当的数据结构，可能会影响所写程序的性能。
+</div>
+<script>
+    var box = document.getElementById('box');
+    console.log(window.getComputedStyle(box, null));
+
+    /**
+     * 获取当前元素所有经过浏览器计算过的样式中的[attr]对应的值
+     * @param curEle：[object]当前要操作的元素对象
+     * @param attr：[string]我们要获取的样式属性名称
+     */
+    function getCss(curEle, attr) {
+        var val = null;
+        try {
+            val = window.getComputedStyle(curEle, null)[attr];
+        } catch (e) {
+            val = curEle.currentStyle[attr];
+        }
+        return val;
+    }
+
+    function getCss2(curEle, attr) {
+        var val = null;
+        if ("getComputedStyle" in window) { // window下有该属性，说明兼容
+            val = window.getComputedStyle(curEle, null)[attr];
+        } else {
+            val = curEle.currentStyle[attr];
+        }
+        return val;
+    }
+
+    function getCss3(curEle, attr) {
+        var val = null;
+        if (/MSIE([678])/.test(window.navigator.userAgent)) {
+            val = curEle.currentStyle[attr];
+        } else {
+            val = window.getComputedStyle(curEle, null)[attr];
+        }
+        return val;
+    }
+
+    console.log(getCss(box, "height"));
+    console.log(getCss2(box, "height"));
+    console.log(getCss3(box, "height"));
+</script>
+</body>
+</html>

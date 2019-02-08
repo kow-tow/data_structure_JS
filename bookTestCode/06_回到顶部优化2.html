@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>backToTop</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: "Apple Chancery";
+        font-size: 20px;
+        -webkit-user-select: none;
+    }
+
+    html, body {
+        width: 100%;
+        height: 500%;
+        background: #11c900;
+        background: -webkit-linear-gradient(top, #11c900, lightseagreen, lightcoral, lightblue, lightcyan, lightgoldenrodyellow, lightcoral, lightskyblue, lightgreen, lightslategray);
+    }
+
+    a {
+        text-decoration: none;
+        color: #000000;
+    }
+
+    a:hover, a:active, a:target, a:visited {
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    #goLink {
+        display: none;
+        position: fixed;
+        bottom: 150px;
+        right: 50px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background: rebeccapurple;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+
+    #goLink:hover {
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+</style>
+<body>
+<a href="javascript:;" id="goLink">GO</a>
+</body>
+<script>
+    var golink = document.getElementById("goLink");
+    // 优化需求2： 开始GO按钮是不显示的，只有当浏览器滚动卷去的高度超过一屏幕高度的时候显示，反之隐藏
+    // 并且，只要浏览器的滚动条在滚动，我们就需要判断Go按钮是显示还是隐藏
+    // 造成浏览器滚动条滚动的因素：拖动滚动条、鼠标滚轮、键盘上下键或者pageDown和pageUp键等等
+    function computedDisplay() { // 滚动条变化就会触发这个方法
+        var curTop = document.documentElement.scrollTop || document.body.scrollTop;
+        // 获取当前一屏幕高度
+        var curHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        golink.style.display = curTop > curHeight ? "block" : "none";
+    }
+
+    window.onscroll = computedDisplay;
+    golink.onclick = function () {
+        // 当点击的时候，让当前的go消失，但光这样不行，只要一滚动就会触发onscroll事件，导致go再次出现
+        // 我们需要点击后，把绑定的onscroll取消掉
+        this.style.display = "none";
+        window.onscroll = null;
+        var duration = 500, interval = 10, target = document.documentElement.scrollTop || document.body.scrollTop;
+        var step = (target / duration) * interval;
+        var timer = window.setInterval(function () {
+            var curTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (curTop === 0) {
+                window.clearInterval(timer);
+                // 当动画结束后，还需要把对应的方法重新绑定给window.onscroll
+                window.onscroll = computedDisplay;
+                return;
+            }
+            curTop -= step;
+            document.documentElement.scrollTop = curTop;
+            document.body.scrollTop = curTop;
+        }, interval);
+    }
+</script>
+</html>
