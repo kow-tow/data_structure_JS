@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单张图片的延迟加载</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+    }
+
+    img {
+        display: block;
+        border: none;
+    }
+
+    .banner {
+        margin: 10px auto;
+        width: 250px;
+        height: 290px;
+        border: 1px solid red;
+        /*给当前区域加一个默认图单位，告诉用户此处图片正在加载中*/
+        background: url("public/default.gif") no-repeat center center #eeeeee;
+    }
+
+    .banner img {
+        display: none;
+        /*在开始的IMG的src属性没有地址，这样的话在IE浏览器中会显示一张碎图，不美观，
+                   所以我们让其默认是隐藏的，当真实的图片加载完成后再显示*/
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<body>
+<div class="banner" id="banner">
+    <!--trueImg使我们给img标签的自定义属性，存储的是自定义属性-->
+    <img src="" alt=""
+         trueImg="https://making-photos.b0.upaiyun.com/review_photos/20e339786cc580b304796f508328da0c.jpg!huge">
+</div>
+</body>
+<script>
+    let banner = document.getElementById("banner"), imgFir = banner.getElementsByTagName("img")[0];
+    window.onscroll = function () {
+        let A = banner.offsetHeight + offset(banner).top;
+        
+    };
+
+    // 获取元素偏移量的工具函数
+    function offset(curEle) {
+        var totalLeft = null, totalTop = null, par = curEle.offsetParent;
+        // 首先把自己本身进行叠加
+        totalLeft += curEle.offsetLeft;
+        totalTop += curEle.offsetTop;
+        // 只要没有找到body，就把父级参照物的左边框和偏移也进行累加
+        while (par) {
+            if (navigator.userAgent.indexOf("MSIE 8.0") === -1) { // 如果不是IE8就累加边框
+                // 累加父级参照物的边框
+                totalLeft += par.clientLeft;
+                totalTop += par.clientTop;
+            }
+            // 累加父级参照物本身的偏移
+            totalLeft += par.offsetLeft;
+            totalTop += par.offsetTop;
+            // 基于当前的P再向上找父级参照物
+            par = par.offsetParent;
+        }
+        return {left: totalLeft, top: totalTop};
+    }
+</script>
+</html>
