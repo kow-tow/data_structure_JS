@@ -17,7 +17,7 @@
     }
 
     .banner {
-        margin: 10px auto;
+        margin: 1000px auto;
         width: 250px;
         height: 290px;
         border: 1px solid red;
@@ -43,8 +43,17 @@
 <script>
     let banner = document.getElementById("banner"), imgFir = banner.getElementsByTagName("img")[0];
     window.onscroll = function () {
-        let A = banner.offsetHeight + offset(banner).top;
-        
+        let A = banner.offsetHeight + offset(banner).top; // 浏览器卷去高度加上一屏幕的高度
+        let B = win("clientHeight") + win("scrollTop"); // 一屏幕的宽度加上图片底部距离A区域的距离(即卷去高度)
+        if (A < B) {
+            let oImg = new Image;
+            oImg.src = imgFir.getAttribute("trueImg");
+            oImg.onload = function () {
+                imgFir.src = oImg.src;
+                imgFir.style.display = "block";
+                oImg = null;
+            }
+        }
     };
 
     // 获取元素偏移量的工具函数
@@ -67,6 +76,16 @@
             par = par.offsetParent;
         }
         return {left: totalLeft, top: totalTop};
+    }
+
+    // 获取/设置css属性的工具函数
+    function win(attr, value) {
+        if (typeof value === 'undefined') { // 未传递value值，属于获取值
+            return document.documentElement[attr] || document.body[attr];
+        }
+        // 设置
+        document.documentElement[attr] = value;
+        document.body[attr] = value;
     }
 </script>
 </html>
