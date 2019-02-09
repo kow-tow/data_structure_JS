@@ -43,22 +43,30 @@
 <script>
     let banner = document.getElementById("banner"), imgFir = banner.getElementsByTagName("img")[0];
     window.onscroll = function () {
+        if (banner.isLoad) {
+            return;
+        }
         let A = banner.offsetHeight + offset(banner).top; // 浏览器卷去高度加上一屏幕的高度
         let B = win("clientHeight") + win("scrollTop"); // 一屏幕的宽度加上图片底部距离A区域的距离(即卷去高度)
         if (A < B) {
+            console.log(1);
+            // 当条件成立时，我们加载真实的图片，第一次加载完成后，我们再让页面继续滚动的过程中，
+            // A小于B一直成立，又重新的执行了下面的操作，导致了重复给一个容器中的图片进行加载
             let oImg = new Image;
             oImg.src = imgFir.getAttribute("trueImg");
             oImg.onload = function () {
+                console.log("ok");
                 imgFir.src = oImg.src;
                 imgFir.style.display = "block";
                 oImg = null;
-            }
+            };
+            banner.isLoad = true; // 设置一个自定义属性，告诉浏览器我已经加载完了(不管有没有成功加载，都不在做处理了)
         }
     };
 
     // 获取元素偏移量的工具函数
     function offset(curEle) {
-        var totalLeft = null, totalTop = null, par = curEle.offsetParent;
+        let totalLeft = null, totalTop = null, par = curEle.offsetParent;
         // 首先把自己本身进行叠加
         totalLeft += curEle.offsetLeft;
         totalTop += curEle.offsetTop;
