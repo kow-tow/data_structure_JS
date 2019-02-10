@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div1">
+    <div></div>
+    <div></div>
+    <div>
+        <p></p>
+        <p></p>
+    </div>
+    <!--哈哈哈-->
+    <p></p>
+    <p></p>
+    <p></p>
+</div>
+</body>
+<script>
+    let oDiv = document.getElementById("div1");
+    console.log(oDiv.children);
+
+    /**
+     * 获取元素的子元素，若被指定标签，获取指定子元素
+     * @param curELe:被操作元素
+     * @param tagName:期望获取的子元素名（标签名）
+     * @returns {Array}:该元素的子元素数组
+     */
+    function getChild(curELe, tagName) {
+        let ary = [];
+        if (/MSIE([678])/i.test(navigator.userAgent)) { // 判断一下浏览器，在IE浏览器下才做兼容处理
+            let nodeList = curELe.childNodes; // 获取当前元素的childNodes
+            for (let i = 0, len = nodeList.length; i < len; i++) {
+                let curNode = nodeList[i];
+                if (curNode.nodeType === 1) { // 是元素节点
+                    ary[ary.length] = curNode;
+                }
+            }
+        } else { // 标准浏览器中使用children即可，但获取的是一个元素集合（类数组）
+            ary = Array.prototype.slice.call(curELe.children); // 把children方法获取的类数组转为数组
+        }
+        // 进行二次筛选
+        if (typeof tagName === "string") {
+            let newAry = [];
+            for (let k = 0, len = ary.length; k < len; k++) {
+                let curEleNode = ary[k];
+                if (curEleNode.nodeName.toLowerCase() === tagName.toLowerCase()) { // 是指定标签
+                    newAry.push(ary[k]);
+                }
+            }
+            return newAry;
+        }
+        return ary;
+    }
+
+    console.log(getChild(oDiv, "p"));
+</script>
+</html>

@@ -25,7 +25,7 @@
     编程语言和数据结构是这些问题解决方案中不可或缺的一部分。如果选择了不恰当的数据结构，可能会影响所写程序的性能。
 </div>
 <script>
-    var box = document.getElementById('box');
+    const box = document.getElementById('box');
 
     /**
      * 获取当前元素所有经过浏览器计算过的样式中的[attr]对应的值
@@ -49,8 +49,8 @@
     // 有些样式属性在不同浏览器中是不兼容的，例如opacity在IE6-8下不兼容
     // 关于透明度的处理
     function getCss(curEle, attr) {
-        var val = null;
-        var reg = null;
+        let val = null;
+        let reg = null;
         if ("getComputedStyle" in window) { // window下有该属性，说明兼容
             val = window.getComputedStyle(curEle, null)[attr];
         } else {
