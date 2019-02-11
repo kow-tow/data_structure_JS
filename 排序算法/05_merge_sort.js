@@ -1,10 +1,10 @@
 // 归并排序
 function merge_sort(list) {
-    let n = list.length;
+    const n = list.length;
     if (n <= 1) {
         return list;
     }
-    let mid = Math.floor(n / 2);
+    const mid = Math.floor(n / 2);
     let left_li = merge_sort(list.slice(0, mid));
     let right_li = merge_sort(list.slice(mid));
     let left_pointer = 0, right_pointer = 0;
