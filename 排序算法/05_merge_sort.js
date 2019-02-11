@@ -10,7 +10,7 @@ function merge_sort(list) {
     let left_pointer = 0, right_pointer = 0;
     let result = [];
     while (left_pointer < left_li.length && right_pointer < right_li.length) {
-        if (left_li[left_pointer] < right_li[right_pointer]) {
+        if (left_li[left_pointer] <= right_li[right_pointer]) {
             result.push(left_li[left_pointer]);
             left_pointer += 1;
         } else {
@@ -23,5 +23,6 @@ function merge_sort(list) {
     return result;
 }
 
+// 测试用例
 let nums = [12, 14, 94, 33, 82, 25, 59, 94, 65, 23, 45, 27, 73, 25, 39, 10];
 console.log(merge_sort(nums));
