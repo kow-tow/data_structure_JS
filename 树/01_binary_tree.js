@@ -63,17 +63,32 @@ class Tree {
 
     // 先序遍历
     prevorder(node) {
-
+        if (!node) {
+            return;
+        }
+        console.log(node.elem);
+        this.prevorder(node.left_child);
+        this.prevorder(node.right_child);
     }
 
     // 中序遍历
     inorder(node) {
-
+        if (!node) {
+            return;
+        }
+        this.inorder(node.left_child);
+        console.log(node.elem);
+        this.inorder(node.right_child);
     }
 
     // 后序遍历
     postorder(node) {
-
+        if (!node) {
+            return;
+        }
+        this.postorder(node.left_child);
+        this.postorder(node.right_child);
+        console.log(node.elem);
     }
 }
 
@@ -90,3 +105,4 @@ tree.add(7);
 tree.add(8);
 tree.add(9);
 console.log(tree.breadth_travel);
+tree.prevorder(tree.root);
